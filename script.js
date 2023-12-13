@@ -1,5 +1,8 @@
-let playerPoints = 0;
-let computerPoints = 0;
+const ERROR_STATEMENT = "Invalid selection. Choose Rock, Paper, or Scissors";
+const TIE_STATEMENT = "Round is a tie! No points awarded.";
+const COMPUTER_WIN_STATEMENT = "Computer wins this round!"
+const PLAYER_WIN_STATEMENT = "Player wins this round!";
+const MAX_ROUNDS = 5;
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
@@ -29,24 +32,63 @@ function getPlayerChoice() {
         case "scissors":
             return "scissors";
             break;
-        default:
-            alert("You must choose Rock, Paper, or Scissors!");
-            playRound();
     }
 }
 
 function playRound(computerChoice, playerChoice) {
-    let computer = getComputerChoice();
-    let player = getPlayerChoice();
-    console.log(`Computer chose ${computer} and Player chose ${player}`);
 
-    if (computer === player) {
-        return "Round is a tie! No points awarded.";
+    if ((playerChoice != "rock") && (playerChoice != "paper") && (playerChoice != "scissors")) {
+        return ERROR_STATEMENT;
     }
-    else if ((computer === "rock" && player === "scissors") || (computer === "paper" && player === "rock") || (computer === "scissors" && player === "paper")) {
-        return "Computer wins this round!";
+
+    console.log(`Computer chose ${computerChoice} and Player chose ${playerChoice}`);
+
+    if (computerChoice === playerChoice) {
+        return TIE_STATEMENT;
     }
-    else if ((computer === "rock" && player === "paper") || (computer === "paper" && player === "scissors") || (computer === "scissors" && player === "rock")) {
-        return "Player wins this round!";
+    else if ((computerChoice === "rock" && playerChoice === "scissors") || (computerChoice === "paper" && playerChoice === "rock") || (computerChoice === "scissors" && playerChoice === "paper")) {
+        return COMPUTER_WIN_STATEMENT;
+    }
+    else if ((computerChoice === "rock" && playerChoice === "paper") || (computerChoice === "paper" && playerChoice === "scissors") || (computerChoice === "scissors" && playerChoice === "rock")) {
+        return PLAYER_WIN_STATEMENT;
     }
 }
+
+function game() {
+
+    let playerPoints = 0;
+    let computerPoints = 0;
+
+    for (i = 1; i <= MAX_ROUNDS; i++) {
+
+        if (playerPoints === 3) {
+            return "PLAYER WINS!"
+        }
+        if (computerPoints === 3) {
+            return "COMPUTER WINS!"
+        }
+
+        console.log(`Round: ${i}`);
+    
+        let roundResult = playRound(getComputerChoice(), getPlayerChoice());
+
+        if (roundResult === ERROR_STATEMENT || roundResult === TIE_STATEMENT) {
+            console.log(roundResult);
+            i--;
+        }
+
+        if (roundResult === COMPUTER_WIN_STATEMENT) {
+            console.log(roundResult);
+            computerPoints++;
+        }
+
+        if (roundResult === PLAYER_WIN_STATEMENT) {
+            console.log(roundResult);
+            playerPoints++;
+        }
+
+    }
+}
+
+    // Executable
+console.log(game());
