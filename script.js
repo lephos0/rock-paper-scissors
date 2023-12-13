@@ -1,9 +1,11 @@
+    // Constant variables
 const ERROR_STATEMENT = "Invalid selection. Choose Rock, Paper, or Scissors";
 const TIE_STATEMENT = "Round is a tie! No points awarded.";
 const COMPUTER_WIN_STATEMENT = "Computer wins this round!"
 const PLAYER_WIN_STATEMENT = "Player wins this round!";
 const MAX_ROUNDS = 5;
 
+    // Functions
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
