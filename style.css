@@ -4,31 +4,89 @@ body,
     height: 100%;
     width: 100%;
     margin: 0;
-    background-color:blanchedalmond;
+    background-color:rgb(182, 205, 233);
 }
 
 .main-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    gap: 150px;
 }
 
+    /* First Screen */
+.welcome {
+    font-size: 60px;
+}
+
+.instruction {
+    font-size: 44px;
+}
+
+.start-btn {
+    background-color: green;
+    color: rgb(78, 7, 78);
+    font-weight: bold;
+    font-size: 20px;
+    flex-grow: 1;
+    width: 200px;
+    max-height: 60px;
+}
+
+    /* Second Screen */
 .top,
 .bottom {
     height: 50%;
 }
 
+.top {
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+}
+
+.round-container {
+    margin-top: 100px;
+}
+
+.round-display {
+    font-size: 42px;
+    color: brown;
+}
+
+.scoreboard {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.player-score {
+    color: blue;
+}
+
+.computer-score {
+    color: red
+}
+
+.status {
+    color: rgb(153, 13, 153);
+}
+
 .bottom {
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
-    gap: 20px;
 }
 
-.bottom > button {
-    align-self: center;
+.button-container {
+    display: flex;
+    justify-content: space-evenly;
 }
-
-button {
+.rock-btn,
+.paper-btn,
+.scissors-btn {
     height:150px;
     flex-basis: 150px;
     padding: 0;
@@ -37,4 +95,9 @@ button {
 button > img {
     height: 100%;
     width: 100%;
+}
+
+button > img:hover {
+    filter: brightness(50%);
+    outline: medium solid rgb(153, 13, 153);
 }

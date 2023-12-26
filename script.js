@@ -12,11 +12,6 @@ let round = 1;
 let playerChoice;
 let computerChoice;
 
-    // Arrays to represent each screen
-const welcomeArray = [
-
-]
-
     // Functions
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
@@ -33,26 +28,57 @@ function getComputerChoice() {
     }
 }
 
+function cleanup() {
+    mainContainer.innerHTML = '';
+}
+
 function playRound(computerChoice, playerChoice) {
 
     if ((playerChoice != "rock") && (playerChoice != "paper") && (playerChoice != "scissors")) {
         return ERROR_STATEMENT;
     }
 
-    console.log(`Computer chose ${computerChoice} and Player chose ${playerChoice}`);
+    let event = (`Computer chose ${computerChoice} and Player chose ${playerChoice}...  `);
 
     if (computerChoice === playerChoice) {
-        return TIE_STATEMENT;
+        cleanup();
+        return event + TIE_STATEMENT;
     }
     else if ((computerChoice === "rock" && playerChoice === "scissors") || (computerChoice === "paper" && playerChoice === "rock") || (computerChoice === "scissors" && playerChoice === "paper")) {
-        return COMPUTER_WIN_STATEMENT;
+        round++;
+        computerPoints++;
+        cleanup();
+        return event + COMPUTER_WIN_STATEMENT;
     }
     else if ((computerChoice === "rock" && playerChoice === "paper") || (computerChoice === "paper" && playerChoice === "scissors") || (computerChoice === "scissors" && playerChoice === "rock")) {
-        return PLAYER_WIN_STATEMENT;
+        round++;
+        playerPoints++;
+        cleanup();
+        return event + PLAYER_WIN_STATEMENT;
     }
 }
 
-function game() {
+function checkForWinner() {
+    if (playerPoints > MAX_ROUNDS / 2) {
+        cleanup();
+        const playerWin = document.createElement('h1');
+        playerWin.textContent = 'THE PLAYER HAS WON THE GAME!!!!';
+        playerWin.className = 'winner';
+        mainContainer.appendChild(playerWin);
+        return;
+    }
+
+    if (computerPoints > MAX_ROUNDS / 2) {
+        cleanup();
+        const computerWin = document.createElement('h1');
+        computerWin.textContent = 'THE COMPUTER HAS WON THE GAME!!!!';
+        computerWin.className = 'winner';
+        mainContainer.appendChild(computerWin);
+        return;
+    }
+}
+
+/*function game() {
     for (i = 1; i <= MAX_ROUNDS; i++) {
 
         if (playerPoints === 3) {
@@ -80,92 +106,120 @@ function game() {
         }
     }
 }
+*/
 
 function buildWelcome() {
     const welcome = document.createElement('h1');
     welcome.className = 'welcome';
-    welcome.textContent = "Welcome to Rock, Paper, Scissors. To begin, click on the button below.";
+    welcome.textContent = 'Welcome to Rock, Paper, Scissors.';
     mainContainer.appendChild(welcome);
+
+    const instruction = document.createElement ('h1');
+    instruction.className = 'instruction';
+    instruction.textContent = "To begin, click on the button below.";
+    mainContainer.appendChild(instruction);
 
     const startButton = document.createElement('button');
     startButton.className = 'start-btn';
     startButton.textContent = 'Click to Play';
     startButton.addEventListener('click', () => {
-        mainContainer.removeChild(startButton);
-        mainContainer.removeChild(welcome);
+        cleanup();
         buildGame();
     });
     mainContainer.appendChild(startButton);
 }
 
 function buildGame() {
+
+    checkForWinner();
     
     const topContainer = document.createElement('div');
     topContainer.className = 'top';
     mainContainer.appendChild(topContainer);
 
-    const scoreboard = document.createElement('div');
-    scoreboard.className = 'scoreboard';
-    topContainer.appendChild(scoreboard);
+        const roundDiv = document.createElement('div');
+        roundDiv.className = 'round-container'
+        topContainer.appendChild(roundDiv);
 
-    const playerScore = document.createElement('h2');
-    playerScore.className = 'player-score';
-    playerScore.textContent = `Player Score: ${playerPoints}`;
-    scoreboard.appendChild(playerScore);
+        const roundDisplay = document.createElement('h2');
+        roundDisplay.className = 'round-display';
+        roundDisplay.textContent = `Round ${round}`;
+        roundDiv.appendChild(roundDisplay);
 
-    const computerScore = document.createElement('h2');
-    computerScore.className = 'computer-score';
-    computerScore.textContent = `Computer Score: ${computerPoints}`;
-    scoreboard.appendChild(computerScore);
+        const scoreboard = document.createElement('div');
+        scoreboard.className = 'scoreboard';
+        topContainer.appendChild(scoreboard);
 
-    const roundDisplay = document.createElement('h2');
-    roundDisplay.textContent = `Round ${round}`;
-    topContainer.appendChild(roundDisplay);
+            const playerScore = document.createElement('h2');
+            playerScore.className = 'player-score';
+            playerScore.textContent = `Player Score: ${playerPoints}`;
+            scoreboard.appendChild(playerScore);
 
-    const gameStatus = document.createElement('h1');
-    gameStatus.textContent = "Waiting for Player to choose...";
-    topContainer.appendChild(gameStatus);
+            const computerScore = document.createElement('h2');
+            computerScore.className = 'computer-score';
+            computerScore.textContent = `Computer Score: ${computerPoints}`;
+            scoreboard.appendChild(computerScore);      
+
+        const statusDiv = document.createElement('div');
+        statusDiv.className = 'status-container';
+        mainContainer.appendChild(statusDiv);
+
+            const gameStatus = document.createElement('h1');
+            gameStatus.className = 'status';
+            gameStatus.textContent = "Waiting for Player to choose...";
+            statusDiv.appendChild(gameStatus);
 
     const bottomContainer = document.createElement('div');
     bottomContainer.className = 'bottom';
     mainContainer.appendChild(bottomContainer);
 
-    const decisionPrompt = document.createElement('h1');
-    decisionPrompt.textContent = 'Click below your choice of Rock, Paper, or Scissors:';
-    bottomContainer.appendChild(decisionPrompt);
+        const decisionDiv = document.createElement('div');
+        decisionDiv.className = 'decision-container';
+        bottomContainer.appendChild(decisionDiv);
 
-    const rockButton = document.createElement('button');
-    rockButton.className = 'rock-btn';
-    rockButton.addEventListener('click', () => {
-        console.log(playRound(getComputerChoice(), 'rock'));
-    });
-    bottomContainer.appendChild(rockButton);
+            const decisionPrompt = document.createElement('h1');
+            decisionPrompt.textContent = 'Click below your choice of Rock, Paper, or Scissors:';
+            decisionDiv.appendChild(decisionPrompt);
 
-    const rockImage = document.createElement('img');
-    rockImage.src = './rock.jpg';
-    rockButton.appendChild(rockImage);
+        const buttonDiv = document.createElement('div');
+        buttonDiv.className = 'button-container';
+        bottomContainer.appendChild(buttonDiv);
 
-    const paperButton = document.createElement('button');
-    paperButton.className = 'paper-btn';
-    paperButton.addEventListener('click', () => {
-        console.log(playRound(getComputerChoice(), 'paper'));
-    });
-    bottomContainer.appendChild(paperButton);
+            const rockButton = document.createElement('button');
+            rockButton.className = 'rock-btn';
+            rockButton.addEventListener('click', () => {
+                gameStatus.textContent = (playRound(getComputerChoice(), 'rock'));
+                setTimeout(buildGame(), 2500);
+            });
+            buttonDiv.appendChild(rockButton);
 
-    const paperImage = document.createElement('img');
-    paperImage.src = './paper.jpg';
-    paperButton.appendChild(paperImage);
+                const rockImage = document.createElement('img');
+                rockImage.src = './rock.jpg';
+                rockButton.appendChild(rockImage);
 
-    const scissorsButton = document.createElement('button');
-    scissorsButton.className = 'scissors-btn';
-    scissorsButton.addEventListener('click', () => {
-        console.log(playRound(getComputerChoice(), 'scissors'));
-    });
-    bottomContainer.appendChild(scissorsButton);
+            const paperButton = document.createElement('button');
+            paperButton.className = 'paper-btn';
+            paperButton.addEventListener('click', () => {
+                gameStatus.textContent = (playRound(getComputerChoice(), 'paper'));
+                setTimeout(buildGame(), 2500);
+            });
+            buttonDiv.appendChild(paperButton);
 
-    const scissorsImage = document.createElement('img');
-    scissorsImage.src = './scissors.jpg';
-    scissorsButton.appendChild(scissorsImage);
+                const paperImage = document.createElement('img');
+                paperImage.src = './paper.jpg';
+                paperButton.appendChild(paperImage);
+
+            const scissorsButton = document.createElement('button');
+            scissorsButton.className = 'scissors-btn';
+            scissorsButton.addEventListener('click', () => {
+                gameStatus.textContent = (playRound(getComputerChoice(), 'scissors'));
+                setTimeout(buildGame(), 2500);
+            });
+            buttonDiv.appendChild(scissorsButton);
+
+                const scissorsImage = document.createElement('img');
+                scissorsImage.src = './scissors.jpg';
+                scissorsButton.appendChild(scissorsImage);
 }
     // Executable
 buildWelcome();
